@@ -20,13 +20,19 @@ con.connect((err) => {
   console.log("db connected.");
 });
 
+
+//middleware
 const app = express();
 app.use(bodyParser.json());
 
+
+//routes
 app.get("/", (req, res) => {
   res.send("GuestPortal Backend");
 });
 
-app.listen(port, hostname, () => {
+
+//liisten
+app.listen(port, host, () => {
   console.log(`Server running at http://${host}:${port}/`);
 });
