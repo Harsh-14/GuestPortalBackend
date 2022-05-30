@@ -1,14 +1,20 @@
-const http = require('http');
-
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 const hostname = '127.0.0.1';
-const port = 3000;
+const port = 5000;
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Guest Portal Backendd');
-});
 
-server.listen(port, hostname, () => {
+app.use(bodyParser.json());
+
+
+app.get("/",(req,res)=> {
+
+  res.send("GuestPortal Backend");
+})
+
+
+
+app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
