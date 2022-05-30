@@ -2,17 +2,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
+const dotenv = require("dotenv").config()
 
 //user
-const hostname = "192.168.10.11";
 const port = 3306;
 
 //connection
-
+const host = process.env.host;
 const con = mysql.createConnection({
-  host: "192.168.10.11",
-  user: "saas",
-  password: "",
+  host,
+  user:process.env.user,
+  password:process.env.password
 });
 
 con.connect((err) => {
@@ -28,5 +28,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  console.log(`Server running at http://${host}:${port}/`);
 });
