@@ -4,14 +4,14 @@ const bodyParser = require("body-parser");
 const mysql = require("mysql");
 
 //user
-const hostname = "127.0.0.1";
-const port = 5000;
+const hostname = "192.168.10.11";
+const port = 3306;
 
 //connection
 
 const con = mysql.createConnection({
-  host: "",
-  user: "",
+  host: "192.168.10.11",
+  user: "saas",
   password: "",
 });
 
