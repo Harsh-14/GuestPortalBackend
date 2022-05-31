@@ -10,9 +10,9 @@ const port = 3306;
 //connection
 const host = process.env.host;
 const con = mysql.createConnection({
-  host,
-  user:process.env.user,
-  password:process.env.password
+  host:"192.168.10.11",
+  user:"saas1",
+  password:"saas"
 });
 
 con.connect((err) => {
