@@ -17,6 +17,7 @@ const con = mysql.createConnection({
   connectTimeout:60,
   
   
+
 });
 
 con.connect((err) => {
