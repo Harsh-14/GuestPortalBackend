@@ -5,14 +5,18 @@ const mysql = require("mysql");
 const dotenv = require("dotenv").config()
 
 //user
-const port = 3306;
+
 
 //connection
 const host = process.env.host;
 const con = mysql.createConnection({
-  host,
-  user:process.env.user,
-  password:process.env.password
+  host:'192.168.10.11',
+  port:"3306",
+  user:'saas1',
+  password:'saas',
+  connectTimeout:60,
+  
+  
 });
 
 con.connect((err) => {
@@ -33,6 +37,6 @@ app.get("/", (req, res) => {
 
 
 //liisten
-app.listen(port, host, () => {
-  console.log(`Server running at http://${host}:${port}/`);
+app.listen(5000,'127.0.0.1', () => {
+  console.log(`Server running at localhost port 5000 `);
 });
