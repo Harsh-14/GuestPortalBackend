@@ -5,20 +5,11 @@ const mysql = require("mysql");
 const dotenv = require("dotenv").config();
 const usersRoutes = require("./routes/users");
 const localPort = 5000;
-
-
-
-
+const {con} = require('./config/connection');
 const app = express();
+
 //connection
 
-const con = mysql.createConnection({
-  host: process.env.host,
-  port: process.env.port,
-  user: process.env.user,
-  password: process.env.password,
-  // connectTimeout: 60,
-});
 
 con.connect((err) => {
   if (err) throw err;

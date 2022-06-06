@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { login } = require("../controllers/userController");
+const { login,requireSignin,userDashboard } = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -8,7 +8,14 @@ const router = express.Router();
 
 
 //route
+
+
+//login
 router.post("/login", login);
+
+//dashboard
+router.get("/userDashboard",requireSignin,userDashboard)
+
 
 
 
