@@ -5,7 +5,7 @@ const con = mysql.createConnection({
     port: process.env.port,
     user: process.env.user,
     password: process.env.password,
-    // connectTimeout: 60,
+  
   });
 
 exports.con = con

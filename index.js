@@ -18,10 +18,6 @@ con.connect((err) => {
 
 //middleware
 app.use(bodyParser.json());
-
-
-
-
 //routes
 
 app.use('/guestportal',usersRoutes);
