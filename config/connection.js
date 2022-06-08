@@ -6,7 +6,11 @@ const con = mysql.createConnection({
     user: process.env.user,
     password: process.env.password,
     supportBigNumbers: true,
-    bigNumberStrings: true
+    bigNumberStrings: true,
+    dateStrings: [
+      'DATE',
+      'DATETIME'
+  ]
   });
 
 exports.con = con

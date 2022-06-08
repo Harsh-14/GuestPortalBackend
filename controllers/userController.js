@@ -9,6 +9,8 @@ const {
   userData,
   hotel_map,
 } = require("../SQL/sqlQueries");
+
+var tranunkid
 exports.login = async (req, res) => {
   const { loginId, pin } = req.body;
 
@@ -43,7 +45,7 @@ exports.login = async (req, res) => {
             console.log(result);
             console.log("done");
 
-            var tranunkid = result[0].tranunkid; //tranukid
+            tranunkid = result[0].tranunkid; //tranukid
             data = result.length;
 
             //checkLanguage
@@ -106,11 +108,12 @@ exports.requireSignin = async (req, res, next) => {
 
 //userDashboard
 exports.userDashboard = async (req, res) => {
-  // res.status(200).json({ message: "Login Sucessfully", data_acess: 1 });
-  let tranunkid = `907400000000000011`;
+  // let tranunkid = `907400000000000011`;
   const hotel_code = 9074;
   const reservation_code = 9;
 
+
+  //userData
   con.query(
     userData,
     [
@@ -131,6 +134,7 @@ exports.userDashboard = async (req, res) => {
   );
 };
 
+//hotel_map
 exports.hotelMap = async (req, res) => {
   con.query(hotel_map, [hotel_code], (err, result) => {
     if (err) throw err;
