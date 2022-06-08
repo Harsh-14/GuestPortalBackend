@@ -5,7 +5,8 @@ const con = mysql.createConnection({
     port: process.env.port,
     user: process.env.user,
     password: process.env.password,
-  
+    supportBigNumbers: true,
+    bigNumberStrings: true
   });
 
 exports.con = con
