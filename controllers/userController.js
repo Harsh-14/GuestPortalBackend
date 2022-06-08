@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
         var reservation_code = loginId;
         // Check pin
         sql = `SELECT fdtraninfo.tranunkid,fdtraninfo.statusunkid,fdrentalinfo.is_void_cancelled_noshow_unconfirmed AS isVoid,fdtraninfo.isgroupowner,fdtraninfo.allowselfguestportalaccess ,fdguesttran.guestunkid, fdtraninfo.supress_roomcharge from saas_ezee.fdtraninfo LEFT JOIN saas_ezee.fdrentalinfo ON fdtraninfo.tranunkid = fdrentalinfo.tranunkid AND fdrentalinfo.is_void_cancelled_noshow_unconfirmed=IF(fdtraninfo.statusunkid IN(5,6,7),1,0) AND ifnull(fdrentalinfo.ismodifiedfromOTA,0) <> 1 AND fdrentalinfo.statusunkid NOT IN (8,12) AND fdrentalinfo.hotel_code=${hotel_code} LEFT JOIN saas_ezee.fdguesttran ON fdtraninfo.masterguesttranunkid = fdguesttran.guesttranunkid  AND fdguesttran.hotel_code=${hotel_code} where IF(IFNULL(fdtraninfo.reservationno,'')='',TRIM(LEADING  FROM (TRIM(LEADING ${hotel_code} FROM fdtraninfo.tranunkid)))=${reservation_code},fdtraninfo.reservationno=${reservation_code}) AND 
-      fdtraninfo.doorcode=${door_code} AND fdtraninfo.hotel_code=${hotel_code} GROUP BY fdtraninfo.tranunkid`;
+      fdtraninfo.doorcode=${door_code} AND fdtraninfo.hotel_code=${hotel_code} GROUP BY fdtraninfo.tranunkid `;
 
         // console.log(sql)
         con.query(sql, (err, result) => {
