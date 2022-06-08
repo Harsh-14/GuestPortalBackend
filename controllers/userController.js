@@ -10,7 +10,7 @@ const {
   hotel_map,
 } = require("../SQL/sqlQueries");
 
-var tranunkid
+var tranunkid;
 exports.login = async (req, res) => {
   const { loginId, pin } = req.body;
 
@@ -110,8 +110,6 @@ exports.requireSignin = async (req, res, next) => {
 exports.userDashboard = async (req, res) => {
   // let tranunkid = `907400000000000011`;
   const hotel_code = 9074;
-  const reservation_code = 9;
-
 
   //userData
   con.query(
