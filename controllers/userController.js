@@ -8,6 +8,7 @@ const {
   check_currency,
   userData,
   hotel_map,
+  manage_profile
 } = require("../SQL/sqlQueries");
 
 var tranunkid;
@@ -140,4 +141,22 @@ exports.hotelMap = async (req, res) => {
 
     res.status(200).json({ message: result });
   });
+};
+
+exports.manageProfile = async (req, res) => {
+  con.changeUser({database:'saas_ezee'},(err)=>{
+    if(err){
+      console.log('Error in changing database', err);
+      return
+    }
+    else{
+      con.query(manage_profile, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+    
+        res.status(200).json({ message: result });
+      });
+    }
+  })
+  
 };
