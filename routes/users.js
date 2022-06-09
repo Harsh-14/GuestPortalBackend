@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/login", login);
 
 //dashboard
-router.get("/userDashboard", userDashboard);
-router.get("/hotelMap",hotelMap)
-router.get("/manageProfile",manageProfile)
+router.get("/userDashboard", requireSignin,userDashboard);
+router.get("/hotelMap",requireSignin,hotelMap)
+router.get("/manageProfile",requireSignin,manageProfile)
 module.exports = router;

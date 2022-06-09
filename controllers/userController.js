@@ -144,13 +144,15 @@ exports.hotelMap = async (req, res) => {
 };
 
 exports.manageProfile = async (req, res) => {
+
+  var hotel_code = 9074
   con.changeUser({database:'saas_ezee'},(err)=>{
     if(err){
       console.log('Error in changing database', err);
       return
     }
     else{
-      con.query(manage_profile, (err, result) => {
+      con.query(manage_profile,[hotel_code,hotel_code,tranunkid,hotel_code], (err, result) => {
         if (err) throw err;
         console.log(result);
     
