@@ -5,7 +5,8 @@ const {
   requireSignin,
   userDashboard,
   hotelMap,
-  manageProfile
+  manageProfile,
+  confirmCheckIn
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -17,6 +18,10 @@ router.post("/login", login);
 
 //dashboard
 router.get("/userDashboard", requireSignin,userDashboard);
-router.get("/hotelMap",requireSignin,hotelMap)
-router.get("/manageProfile",requireSignin,manageProfile)
+//hotel on map
+router.get("/hotelMap",requireSignin,hotelMap);
+// manageProfile
+router.get("/manageProfile",requireSignin,manageProfile);
+//confirmCheckin
+router.post("/confrimCheckIn",requireSignin,confirmCheckIn);
 module.exports = router;
