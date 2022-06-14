@@ -1,9 +1,13 @@
 const jwt = require("jsonwebtoken");
 const { con } = require("../config/connection");
+
+var exec = require("child_process").exec;
+
 var moment = require("moment");
+
 const {
   checkHotel,
-  checkPin,
+  checkPin, 
   checkLanguage,
   selectHotel_stuff,
   check_currency,
@@ -23,12 +27,30 @@ const currentDateTime = moment().format("yyyy-mm-dd:hh:mm:ss");
 var hotel_code = 9074;
 var requestunkid;
 var tranunkid;
+
+var hotel_code;
+exports.login2=async(req,res,next)=>{
+  var unklink=req.params.unkid
+
 var groupCode = " ";
 exports.login = async (req, res) => {
   const { loginId, pin } = req.body;
 
+
   try {
-    if (!loginId || !pin) {
+    exec(`php functions/isPropertyexist.php ${unklink} `,
+    function (error, stdout, stderr) {
+       hotel_code=stdout
+       next();
+      });
+    } catch (error) {
+      
+    }
+  }
+  exports.login = async (req, res) => {
+    const { loginId, pin } = req.body;
+    try {
+      if (!loginId || !pin) {
       return res.status(401).json({ error: "Please fill all the fileds." });
     } else {
       //assign variables
