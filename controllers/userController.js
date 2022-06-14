@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
 const { con } = require("../config/connection");
+var exec = require("child_process").exec;
+
 const {
   checkHotel,
-  checkPin,
+  checkPin, 
   checkLanguage,
   selectHotel_stuff,
   check_currency,
@@ -12,17 +14,28 @@ const {
 } = require("../SQL/sqlQueries");
 
 var tranunkid;
-exports.login = async (req, res) => {
-  const { loginId, pin } = req.body;
-
+var hotel_code;
+exports.login2=async(req,res,next)=>{
+  var unklink=req.params.unkid
   try {
-    if (!loginId || !pin) {
+    exec(`php functions/isPropertyexist.php ${unklink} `,
+    function (error, stdout, stderr) {
+       hotel_code=stdout
+       next();
+      });
+    } catch (error) {
+      
+    }
+  }
+  exports.login = async (req, res) => {
+    const { loginId, pin } = req.body;
+    try {
+      if (!loginId || !pin) {
       return res.status(401).json({ error: "Please fill all the fileds." });
     } else {
       //assign variables
       var door_code = pin;
       var reservation_code = loginId;
-      var hotel_code = 9074;
 
       // check property code
       con.query(checkHotel, [hotel_code], (err, result) => {
