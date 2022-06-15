@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
 const dotenv = require("dotenv").config();
-const usersRoutes = require("./routes/users");
+const usersRoutes = require("./routes/users"); 
 const localPort = 5000;
 const {con} = require('./config/connection');
 const app = express();
@@ -15,13 +15,11 @@ con.connect((err) => {
   if (err) throw err;
   console.log("db connected.");
 });
-
 //middleware
 app.use(bodyParser.json());
 //routes
 
 app.use('/guestportal',usersRoutes);
-
 
 
 //liisten

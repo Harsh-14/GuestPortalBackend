@@ -1,9 +1,13 @@
 const jwt = require("jsonwebtoken");
 const { con } = require("../config/connection");
+
+var exec = require("child_process").exec;
+
 var moment = require("moment");
+
 const {
   checkHotel,
-  checkPin,
+  checkPin, 
   checkLanguage,
   selectHotel_stuff,
   check_currency,
@@ -20,15 +24,39 @@ console.log(moment().format("yyyy-mm-dd:hh:mm:ss"));
 
 const currentDateTime = moment().format("yyyy-mm-dd:hh:mm:ss");
 
-var hotel_code = 9074;
+// var hotel_code = 9074;
 var requestunkid;
 var tranunkid;
+
+var hotel_code;
+// exports.login2=async(req,res,next)=>{
+  // var unklink=req.params.unkid
+
 var groupCode = " ";
-exports.login = async (req, res) => {
-  const { loginId, pin } = req.body;
+//middleware
+exports.login2 = async (req, res,next) => {
+
+  var unklink=req.params.unkid
+
+  console.log(unklink)
+
+
 
   try {
-    if (!loginId || !pin) {
+    exec(`php functions/isPropertyexist.php ${unklink} `,
+    function (error, stdout, stderr) {
+       hotel_code=stdout
+       next();
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  exports.login = async (req, res) => {
+    const { loginId, pin } = req.body;
+    console.log(loginId,pin,hotel_code)
+    try {
+      if (!loginId || !pin) {
       return res.status(401).json({ error: "Please fill all the fileds." });
     } else {
       //assign variables
@@ -158,7 +186,7 @@ exports.hotelMap = async (req, res) => {
 };
 
 exports.manageProfile = async (req, res) => {
-  var hotel_code = 9074;
+  // var hotel_code = 9074;
   con.changeUser({ database: "saas_ezee" }, (err) => {
     if (err) {
       console.log("Error in changing database", err);
@@ -389,4 +417,4 @@ exports.transport_request = async (req, res) => {
       console.log(e);
     }
   });
-};
+}
