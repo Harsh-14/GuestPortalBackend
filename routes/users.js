@@ -6,7 +6,8 @@ const {
   userDashboard,
   hotelMap,
   manageProfile,
-  confirmCheckIn
+  confirmCheckIn,
+  transport_request
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -15,7 +16,6 @@ const router = express.Router();
 
 //login
 router.post("/login", login);
-
 //dashboard
 router.get("/userDashboard", requireSignin,userDashboard);
 //hotel on map
@@ -24,4 +24,6 @@ router.get("/hotelMap",requireSignin,hotelMap);
 router.get("/manageProfile",requireSignin,manageProfile);
 //confirmCheckin
 router.post("/confrimCheckIn",requireSignin,confirmCheckIn);
+//transport request
+router.post("/transport",requireSignin,transport_request);
 module.exports = router;

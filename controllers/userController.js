@@ -14,7 +14,7 @@ const {
   selfCheckin,
   selfCheckin_transport,
 } = require("../SQL/sqlQueries");
-const e = require("express");
+const express = require("express");
 
 console.log(moment().format("yyyy-mm-dd:hh:mm:ss"));
 
@@ -199,6 +199,9 @@ exports.confirmCheckIn = async (req, res) => {
 
         let { spReq, time1 } = req.body;
 
+        time1 = moment(time1).format("YYYY-MM-DD h:mm:ss a");
+        console.log(time1);
+
         var description = "";
         var requestdateTime = "";
 
@@ -248,15 +251,28 @@ exports.confirmCheckIn = async (req, res) => {
             if (requestunkid != "") {
               console.log("success");
 
-              console.log(Object.keys(req.body).length)
-              if (Object.keys(req.body).length >= 9) {
-                let = { description, transportNameNumber, pickupBy } = req.body;
+              console.log(Object.keys(req.body).length);
+              if (Object.keys(req.body).length > 9) {
+                console.log(req.body);
+                let = {
+                  description,
+                  transportNameNumber,
+                  pickupBy,
+                  time2,
+                  date2,
+                } = req.body;
 
-                description = `${description}, ${transportNameNumber}, ${pickupBy}`;
+                description = `PICKUPREQUEST & ${description}, ${transportNameNumber}, ${pickupBy}`;
 
                 console.log(description);
                 requestunkid = BigInt(requestunkid) + 2n;
                 requestunkid = String(requestunkid);
+
+                date2 = moment(date2).format("YYYY-MM-DD");
+                time2 = moment(time2).format("h:mm:ss a");
+
+                requestdateTime = `${date2} ${time2}`;
+                console.log("____________________",requestdateTime)
 
                 con.query(
                   selfCheckin_transport,
@@ -294,4 +310,83 @@ exports.confirmCheckIn = async (req, res) => {
   } catch (e) {
     console.log(e);
   }
+};
+
+exports.transport_request = async (req, res) => {
+  con.query(getRequestunkid, [hotel_code], (err, result) => {
+    if (err) throw err;
+    // console.log(
+    //   result,
+    //   typeof result,
+    //   result[0].tranunkid,
+    //   result[0],
+    //   Object.values(result[0])[0]
+    // );
+    requestunkid = Object.values(result[0])[0];
+    tranunkid = Object.values(result[0])[1];
+    var requestdateTime;
+    var description;
+    try {
+      console.log(req.body);
+      var reqType;
+      const { pickupBy, dropoffBy } = req.body;
+      console.log(pickupBy, dropoffBy);
+
+      if (pickupBy != undefined) {
+        var { description1, transportNameNumber1, date1, time1 } = req.body;
+        description = description1;
+        description = `  PICKUP & ${description1}, ${transportNameNumber1}, ${pickupBy}`;
+        date1 = moment(date1).format("YYYY-MM-DD");
+        time1 = moment(time1).format("h:mm:ss a");
+        console.log(
+          "__________________________",
+          date1,
+          "___________________________",
+          time1,
+          "____________________________________"
+        );
+        requestdateTime = `${date1} ${time1}`;
+      } else {
+        var { description2, transportNameNumber2, date2, time2 } = req.body;
+        console.log(time2);
+        description = description2;
+        description = ` DROPPOFF & ${description2}, ${transportNameNumber2}, ${dropoffBy}`;
+        date2 = moment(date2).format("YYYY-MM-DD");
+        time2 = moment(time2).format("h:mm:ss a");
+        console.log(
+          "__________________________",
+          date2,
+          "___________________________",
+          time2,
+          "____________________________________"
+        );
+        requestdateTime = `${date2} ${time2}`;
+      }
+      const parentid = -1;
+      const status = 0;
+
+      con.query(
+        selfCheckin_transport,
+        [
+          requestunkid,
+          hotel_code,
+          tranunkid,
+          groupCode,
+          "TRANSPORT",
+          description,
+          parentid,
+          status,
+          requestdateTime,
+        ],
+        (err, result) => {
+          if (err) throw err;
+          // console.log(result);
+        }
+      );
+      console.log("sucess");
+      res.status(201).json({ message: "Your Request Send SucessFully" });
+    } catch (e) {
+      console.log(e);
+    }
+  });
 };

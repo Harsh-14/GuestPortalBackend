@@ -46,3 +46,5 @@ INSERT into saas_ezee.guestrequest (requestunkid,hotel_code,tranunkid,groupcode,
 
 
 exports.selfCheckin_transport = `Insert into saas_ezee.guestrequest(requestunkid,hotel_code,tranunkid,groupcode,requesttype,description,parentid,status,requestdatetime)Values(?,?,?,?,?,?,?,?,?)`
+
+
