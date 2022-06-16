@@ -7,7 +7,7 @@ var moment = require("moment");
 
 const {
   checkHotel,
-  checkPin, 
+  checkPin,
   checkLanguage,
   selectHotel_stuff,
   check_currency,
@@ -15,48 +15,44 @@ const {
   hotel_map,
   manage_profile,
   getRequestunkid,
+  update_ManageProfile,
   selfCheckin,
   selfCheckin_transport,
 } = require("../SQL/sqlQueries");
-const express = require("express");
 
 console.log(moment().format("yyyy-mm-dd:hh:mm:ss"));
 
 const currentDateTime = moment().format("yyyy-mm-dd:hh:mm:ss");
 
-// var hotel_code = 9074;
 var requestunkid;
 var tranunkid;
 
 var hotel_code;
-// exports.login2=async(req,res,next)=>{
-  // var unklink=req.params.unkid
 
 var groupCode = " ";
 //middleware
-exports.login2 = async (req, res,next) => {
+exports.login2 = async (req, res, next) => {
+  var unklink = req.params.unkid;
 
-  var unklink=req.params.unkid
-
-  console.log(unklink)
-
-
+  console.log(unklink);
 
   try {
-    exec(`php functions/isPropertyexist.php ${unklink} `,
-    function (error, stdout, stderr) {
-       hotel_code=stdout
-       next();
-      });
-    } catch (error) {
-      console.log(error)
-    }
+    exec(
+      `php functions/isPropertyexist.php ${unklink} `,
+      function (error, stdout, stderr) {
+        hotel_code = stdout;
+        next();
+      }
+    );
+  } catch (error) {
+    console.log(error);
   }
-  exports.login = async (req, res) => {
-    const { loginId, pin } = req.body;
-    console.log(loginId,pin,hotel_code)
-    try {
-      if (!loginId || !pin) {
+};
+exports.login = async (req, res) => {
+  const { loginId, pin } = req.body;
+  console.log(loginId, pin, hotel_code);
+  try {
+    if (!loginId || !pin) {
       return res.status(401).json({ error: "Please fill all the fileds." });
     } else {
       //assign variables
@@ -208,6 +204,67 @@ exports.manageProfile = async (req, res) => {
   });
 };
 
+exports.updateManageProfile = async (req, res) => {
+  con.changeUser({ database: "saas_ezee" }, (err) => {
+    if (err) {
+      console.log("Error in changing database", err);
+      return;
+    } else {
+      console.log(req.body);
+
+      const {
+        guestImage,
+        identityImage,
+        honorifics,
+        name,
+        gender,
+        address,
+        city,
+        state,
+        zip,
+        country,
+        phone,
+        email,
+        guestIdentity,
+        guestIdentityNumber,
+        expiryDate,
+        issuingCountry,
+        identity_city,
+      } = req.body;
+
+      con.query(
+        update_ManageProfile,
+        [
+          hotel_code,
+          hotel_code,
+          honorifics,
+          name,
+          gender,
+          phone,
+          email,
+          address,
+          country,
+          city,
+          state,
+          zip,
+          guestIdentityNumber,
+          expiryDate,
+          identity_city,
+          issuingCountry,
+          guestIdentity,
+          tranunkid,
+          hotel_code,
+        ],
+        (err, result) => {
+          if (err) throw err;
+          console.log(result);
+          console.log("sucess");
+        }
+      );
+    }
+  });
+};
+
 exports.confirmCheckIn = async (req, res) => {
   try {
     con.query(getRequestunkid, [hotel_code], (err, result) => {
@@ -300,7 +357,7 @@ exports.confirmCheckIn = async (req, res) => {
                 time2 = moment(time2).format("h:mm:ss a");
 
                 requestdateTime = `${date2} ${time2}`;
-                console.log("____________________",requestdateTime)
+                console.log("____________________", requestdateTime);
 
                 con.query(
                   selfCheckin_transport,
@@ -417,4 +474,4 @@ exports.transport_request = async (req, res) => {
       console.log(e);
     }
   });
-}
+};

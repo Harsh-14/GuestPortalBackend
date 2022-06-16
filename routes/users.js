@@ -8,7 +8,8 @@ const {
   hotelMap,
   manageProfile,
   confirmCheckIn,
-  transport_request
+  transport_request,
+  updateManageProfile
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -24,6 +25,14 @@ router.get("/userDashboard", requireSignin,userDashboard);
 router.get("/hotelMap",requireSignin,hotelMap);
 // manageProfile
 router.get("/manageProfile",requireSignin,manageProfile);
+
+//manage profile update
+router.post("/manaageProfile/update",requireSignin,updateManageProfile)
+
+
+
+
+
 //confirmCheckin
 router.post("/confrimCheckIn",requireSignin,confirmCheckIn);
 //transport request
