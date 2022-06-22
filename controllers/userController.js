@@ -15,9 +15,12 @@ const {
   hotel_map,
   manage_profile,
   getRequestunkid,
+
   update_ManageProfile,
   selfCheckin,
   selfCheckin_transport,
+  insert_ManageProfile,
+  get_guesttranukid,
 } = require("../SQL/sqlQueries");
 
 console.log(moment().format("yyyy-mm-dd:hh:mm:ss"));
@@ -26,7 +29,7 @@ const currentDateTime = moment().format("yyyy-mm-dd:hh:mm:ss");
 
 var requestunkid;
 var tranunkid;
-
+var guesttranunkid;
 var hotel_code;
 
 var groupCode = " ";
@@ -204,6 +207,53 @@ exports.manageProfile = async (req, res) => {
   });
 };
 
+console.log(hotel_code, `***************************************`);
+
+exports.insert_newGuest_manageProfile = async (req, res) => {
+  con.changeUser({ database: "saas_ezee" }, (err) => {
+    if (err) {
+      console.log("Error in changing database", err);
+    } else {
+      console.log(req.body);
+      console.log(hotel_code);
+
+      con.query(get_guesttranukid, [hotel_code], (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(result);
+
+        guesttranunkid = Object.values(result[0])[0];
+        console.log(guesttranunkid);
+        console.log(guesttranunkid, "===========guesttranukid");
+        console.log(tranunkid);
+
+        con.query(insert_ManageProfile, [
+          guesttranunkid,
+          hotel_code,
+          tranunkid,
+          guesttranunkid,
+         
+          guesttranunkid,
+          hotel_code,
+          req.body.honorifics,
+          req.body.name,
+          req.body.gender,
+          req.body.phone,
+          req.body.email,
+          req.body.address,
+          req.body.country ? null : "INDIA",
+          req.body.city,
+          req.body.state,
+          req.body.zip,
+          req.body.guestIdentityNumber
+
+        ]);
+      });
+    }
+  });
+};
+
 exports.updateManageProfile = async (req, res) => {
   con.changeUser({ database: "saas_ezee" }, (err) => {
     if (err) {
@@ -215,6 +265,7 @@ exports.updateManageProfile = async (req, res) => {
       const {
         guestImage,
         identityImage,
+        guesttranunkid,
         honorifics,
         name,
         gender,
@@ -252,6 +303,7 @@ exports.updateManageProfile = async (req, res) => {
           identity_city,
           issuingCountry,
           guestIdentity,
+          guesttranunkid,
           tranunkid,
           hotel_code,
         ],

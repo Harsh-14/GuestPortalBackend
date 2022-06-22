@@ -34,6 +34,15 @@ exports.hotel_map = `SELECT saas_ezee.cfhotel.*,saas_ezee.cfcountry.country_name
 
 exports.manage_profile = `SELECT fdguesttran.guesttranunkid,fdguesttran.tranunkid,fdguesttran.guestunkid AS contactunkid,IF(fdtraninfo.masterguesttranunkid=fdguesttran.guesttranunkid,1,0) AS ismaster, IFNULL(TRC.salutation,'') As salutation,TRC.name,TRC.ischild,TRC.gender,IFNULL(TRC.nationality,'') AS nationality, IFNULL(TRC.registrationnumber,'') AS registrationnumber,IFNULL(TRC.mobile,'') AS mobile, IFNULL(TRC.phone,'') AS phone,IFNULL(TRC.email,'') AS email,IFNULL(TRC.fax,'') AS fax, IFNULL(TRC.address,'') AS address,TRC.country,IFNULL(TRC.city,'') AS city,IFNULL(TRC.state,'') AS state, IFNULL(TRC.zipcode,'') AS zipcode,TRC.identityunkid,IFNULL(TRC.identity_no,'') AS identity_no, IFNULL(TRC.business_name,'') AS company,IFNULL(TRC.vipstatusunkid,'') AS vipstatusunkid,IFNULL(CAST(TRC.birthdate AS DATE),'') AS birthdate, IFNULL(CAST(TRC.anniversary AS DATE),'') AS anniversary, IFNULL(CAST(TRC.exp_date AS DATE),'') AS exp_date, IFNULL(CAST(TRC.spousebirthdate AS DATE),'') AS spousebirthdate, IFNULL(TRC.guestidlocation,'') AS guestidentity, IFNULL(TRC.guestimagelocation,'') AS guestimage,  IFNULL(TRC.identity_country,'-1') AS identity_country, IFNULL(TRC.birthcountry,'-1') AS birthcountry ,IFNULL(TRC.identity_city,'') AS identity_city,IFNULL(TRC.birthcity,'') AS birthcity FROM fdtraninfo INNER JOIN fdguesttran ON fdtraninfo.tranunkid = fdguesttran.tranunkid AND fdguesttran.hotel_code=?  INNER JOIN trcontact AS TRC ON TRC.contactunkid = fdguesttran.guestunkid AND TRC.hotel_code=?   WHERE  fdtraninfo.tranunkid =?  AND fdtraninfo.hotel_code=? `;
 
+exports.insert_ManageProfile = `INSERT INTO fdguesttran ( guesttranunkid, hotel_code, tranunkid, guestunkid ) VALUES(?,?,?,?);
+
+
+
+INSERT INTO trcontact ( contactunkid, hotel_code, salutation,name,gender,mobile, email, address, country, city, state, zipcode, identity_no)
+VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+
+exports.get_guesttranukid = `SELECT max(guesttranunkid)+1 from fdguesttran where hotel_code = ?`;
+
 exports.update_ManageProfile = `UPDATE
 fdtraninfo
 INNER JOIN
@@ -62,6 +71,7 @@ TRC.guestidlocation=?
 
 
 WHERE
+fdguesttran.guesttranunkid =? AND
 fdtraninfo.tranunkid = ?
     AND fdtraninfo.hotel_code = ?`;
 
@@ -71,4 +81,3 @@ exports.selfCheckin = `
 INSERT into saas_ezee.guestrequest (requestunkid,hotel_code,tranunkid,groupcode,requesttype,description,parentid,status,requestdatetime,responsedatetime,visitorip,ischecked,itinerarycnt) Values(?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
 exports.selfCheckin_transport = `Insert into saas_ezee.guestrequest(requestunkid,hotel_code,tranunkid,groupcode,requesttype,description,parentid,status,requestdatetime)Values(?,?,?,?,?,?,?,?,?)`;
-

@@ -9,7 +9,8 @@ const {
   manageProfile,
   confirmCheckIn,
   transport_request,
-  updateManageProfile
+  updateManageProfile,
+  insert_newGuest_manageProfile
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -27,10 +28,10 @@ router.get("/hotelMap",requireSignin,hotelMap);
 router.get("/manageProfile",requireSignin,manageProfile);
 
 //manage profile update
-router.post("/manaageProfile/update",requireSignin,updateManageProfile)
+router.put("/manageProfile/update",requireSignin,updateManageProfile)
 
 
-
+router.post("/manageProfile/newguest",requireSignin,insert_newGuest_manageProfile)
 
 
 //confirmCheckin

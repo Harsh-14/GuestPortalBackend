@@ -8,6 +8,7 @@ var db_config = {
   supportBigNumbers: true,
   bigNumberStrings: true,
   dateStrings: ["DATE", "DATETIME"],
+  multipleStatements: true
 };
 
 var con;
