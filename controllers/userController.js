@@ -200,7 +200,7 @@ exports.manageProfile = async (req, res) => {
           if (err) throw err;
           console.log(result);
 
-          res.status(200).json({ message: result });
+          res.status(200).json({ data: result });
         }
       );
     }
@@ -250,6 +250,17 @@ exports.insert_newGuest_manageProfile = async (req, res) => {
 
         ]);
       });
+
+
+
+        res.status(200).json({message:"USER ADD SUCESSFULLY"})
+
+
+
+
+
+
+
     }
   });
 };
@@ -313,6 +324,8 @@ exports.updateManageProfile = async (req, res) => {
           console.log("sucess");
         }
       );
+res.status(200).json({message:"USER DATA UPDATE SUCESSFULLY"})
+      
     }
   });
 };
