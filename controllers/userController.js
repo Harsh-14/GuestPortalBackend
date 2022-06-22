@@ -180,7 +180,7 @@ exports.hotelMap = async (req, res) => {
     if (err) throw err;
     console.log(result);
 
-    res.status(200).json({ data: result });
+    res.status(200).json({ messagez: result });
   });
 };
 
@@ -207,7 +207,7 @@ exports.manageProfile = async (req, res) => {
   });
 };
 
-console.log(hotel_code, `***************************************`);
+
 
 exports.insert_newGuest_manageProfile = async (req, res) => {
   con.changeUser({ database: "saas_ezee" }, (err) => {
@@ -253,7 +253,7 @@ exports.insert_newGuest_manageProfile = async (req, res) => {
 
 
 
-        res.status(200).json({message:"USER ADD SUCESSFULLY"})
+        res.status(200).json({message:{messageTitle:"New Guest added",messageBody:`New Guest ${req.body.name} ADDED sucessfully`}})
 
 
 
@@ -324,7 +324,7 @@ exports.updateManageProfile = async (req, res) => {
           console.log("sucess");
         }
       );
-res.status(200).json({message:"USER DATA UPDATE SUCESSFULLY"})
+res.status(200).json({message:{messageTitle:"Update Guest Details",messageBody:"User Data update sucessfully"}})
       
     }
   });
@@ -334,15 +334,9 @@ exports.confirmCheckIn = async (req, res) => {
   try {
     con.query(getRequestunkid, [hotel_code], (err, result) => {
       if (err) throw err;
-      console.log(
-        result,
-        typeof result,
-        result[0].tranunkid,
-        result[0],
-        Object.values(result[0])[0]
-      );
+
       requestunkid = Object.values(result[0])[0];
-      tranunkid = Object.values(result[0])[1];
+      tranunkid = tranunkid;
 
       try {
         console.log(req.body);
@@ -356,7 +350,7 @@ exports.confirmCheckIn = async (req, res) => {
         var requestdateTime = "";
 
         if (!spReq || !time1) {
-          description = "this is my respnsibility";
+          description = "this is my responsibility";
           requestdateTime = currentDateTime;
         } else {
           description = spReq;
@@ -376,7 +370,7 @@ exports.confirmCheckIn = async (req, res) => {
 
         console.log(typeof requestunkid, BigInt(requestunkid));
         console.log(typeof requestunkid, requestunkid);
-
+        console.log(tranunkid)
         con.query(
           selfCheckin,
           [
@@ -440,21 +434,23 @@ exports.confirmCheckIn = async (req, res) => {
                   (err, result) => {
                     if (err) throw err;
                     console.log(result);
+
+                   
                   }
                 );
 
-                res
-                  .status(201)
-                  .json({ message: "Your Request Send SucessFully" });
+               
               }
+
+              res.status(200).json({message:{messageTitle:"Selfcheckin request",messageBody:"Your request send  sucessfully"}});
             }
           }
         );
       } catch (e) {
         console.log(e);
-        res.status(400).json({
-          message: "Something wrong please contect your hotel reception",
-        });
+        res.status(400).json(
+          {message:{messageTitle:"ERROR",messageBody:"SOMETHING WRONG,contect to your  Hotel receptionist"}}
+        );
       }
     });
   } catch (e) {
@@ -496,6 +492,8 @@ exports.transport_request = async (req, res) => {
           "____________________________________"
         );
         requestdateTime = `${date1} ${time1}`;
+
+      
       } else {
         var { description2, transportNameNumber2, date2, time2 } = req.body;
         console.log(time2);
@@ -530,11 +528,12 @@ exports.transport_request = async (req, res) => {
         ],
         (err, result) => {
           if (err) throw err;
-          // console.log(result);
+          console.log(result);
+          res.status(201).json({ message: {messageTitle:"Transport Request",messageBody:`Your request:${description} send sucessfully` } });
         }
       );
       console.log("sucess");
-      res.status(201).json({ message: "Your Request Send SucessFully" });
+     
     } catch (e) {
       console.log(e);
     }

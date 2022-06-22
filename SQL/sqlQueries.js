@@ -67,9 +67,6 @@ TRC.exp_date=?,
 TRC.identity_city=?,
 TRC.identity_country=?,
 TRC.guestidlocation=?
-
-
-
 WHERE
 fdguesttran.guesttranunkid =? AND
 fdtraninfo.tranunkid = ?
