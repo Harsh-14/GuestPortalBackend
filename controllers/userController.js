@@ -435,7 +435,8 @@ exports.confirmCheckIn = async (req, res) => {
                     if (err) throw err;
                     console.log(result);
 
-                   
+               
+
                   }
                 );
 
