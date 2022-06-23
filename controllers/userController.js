@@ -32,11 +32,11 @@ var requestunkid;
 var tranunkid;
 var guesttranunkid;
 var hotel_code;
-
+var unklink;
 var groupCode = " ";
 //middleware
 exports.login2 = async (req, res, next) => {
-  var unklink = req.params.unkid;
+  unklink = req.params.unkid;
 
   console.log(unklink);
 
@@ -81,6 +81,7 @@ exports.login = async (req, res) => {
             door_code,
             hotel_code,
           ],
+
           (err, result) => {
             if (err) throw err;
             console.log(result);
@@ -122,7 +123,7 @@ exports.login = async (req, res) => {
 
                     res
                       .status(200)
-                      .json({ token, message: "User Login SucessFully" });
+                      .json({ token,unklink, message: "User Login SucessFully" });
                   });
                 }
               );
