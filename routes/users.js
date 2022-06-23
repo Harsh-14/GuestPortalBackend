@@ -23,7 +23,7 @@ router.post("/login/:unkid",login2,login)
 //dashboard
 router.get("/userDashboard", requireSignin,userDashboard);
 //hotel on map
-router.get("/hotelMap",requireSignin,hotelMap);
+router.get("/hotelMap",hotelMap);
 // manageProfile
 router.get("/manageProfile",requireSignin,manageProfile);
 
