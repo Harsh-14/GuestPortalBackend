@@ -180,7 +180,7 @@ exports.hotelMap = async (req, res) => {
     if (err) throw err;
     console.log(result);
 
-    res.status(200).json({ messagez: result });
+    res.status(200).json({ data: result });
   });
 };
 
@@ -470,7 +470,7 @@ exports.transport_request = async (req, res) => {
     //   Object.values(result[0])[0]
     // );
     requestunkid = Object.values(result[0])[0];
-    tranunkid = Object.values(result[0])[1];
+    tranunkid = tranunkid
     var requestdateTime;
     var description;
     try {

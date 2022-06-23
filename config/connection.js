@@ -8,7 +8,7 @@ var db_config = {
   supportBigNumbers: true,
   bigNumberStrings: true,
   dateStrings: ["DATE", "DATETIME"],
-  multipleStatements: true
+  multipleStatements: true,
 };
 
 var con;
@@ -21,7 +21,7 @@ function handleDisconnect() {
       console.log("error when connecting to db:", err);
       setTimeout(handleDisconnect, 2000);
     }
-  })
+  });
 
   con.on("error", function (err) {
     console.log("db error", err);
