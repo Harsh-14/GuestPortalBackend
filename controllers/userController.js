@@ -21,7 +21,7 @@ const {
   selfCheckin_transport,
   insert_ManageProfile,
   get_guesttranukid,
-  delete_ManageProfile
+  delete_ManageProfile,
 } = require("../SQL/sqlQueries");
 
 console.log(moment().format("yyyy-mm-dd:hh:mm:ss"));
@@ -177,7 +177,7 @@ exports.userDashboard = async (req, res) => {
 
 //hotel_map
 exports.hotelMap = async (req, res) => {
-  console.log("HotelMap Get request")
+  console.log("HotelMap Get request");
   con.query(hotel_map, [hotel_code], (err, result) => {
     if (err) throw err;
     console.log(result);
@@ -209,8 +209,6 @@ exports.manageProfile = async (req, res) => {
   });
 };
 
-
-
 exports.insert_newGuest_manageProfile = async (req, res) => {
   con.changeUser({ database: "saas_ezee" }, (err) => {
     if (err) {
@@ -235,7 +233,7 @@ exports.insert_newGuest_manageProfile = async (req, res) => {
           hotel_code,
           tranunkid,
           guesttranunkid,
-         
+
           guesttranunkid,
           hotel_code,
           req.body.honorifics,
@@ -248,21 +246,16 @@ exports.insert_newGuest_manageProfile = async (req, res) => {
           req.body.city,
           req.body.state,
           req.body.zip,
-          req.body.guestIdentityNumber
-
+          req.body.guestIdentityNumber,
         ]);
       });
 
-
-
-        res.status(200).json({message:{messageTitle:"New Guest added",messageBody:`New Guest ${req.body.name} ADDED sucessfully`}})
-
-
-
-
-
-
-
+      res.status(200).json({
+        message: {
+          messageTitle: "New Guest added",
+          messageBody: `New Guest: ${req.body.honorifics} ${req.body.name} add sucessfully`,
+        },
+      });
     }
   });
 };
@@ -326,14 +319,17 @@ exports.updateManageProfile = async (req, res) => {
           console.log("sucess");
         }
       );
-res.status(200).json({message:{messageTitle:"Update Guest Details",messageBody:"User Data update sucessfully"}})
-      
+      res.status(200).json({
+        message: {
+          messageTitle: `Update Guest: ${honorifics} ${name} Details`,
+          messageBody: "User Data update sucessfully",
+        },
+      });
     }
   });
 };
 
-
-exports.delete_guestProfile = async (req,res) => {
+exports.delete_guestProfile = async (req, res) => {
   con.changeUser({ database: "saas_ezee" }, (err) => {
     if (err) {
       console.log("Error in changing database", err);
@@ -342,35 +338,28 @@ exports.delete_guestProfile = async (req,res) => {
       console.log(req.body);
 
       const guesttranunkid = req.body.guesttranunkid;
+      const name = req.body.name;
+      const honorifics = req.body.honorifics;
 
+      con.query(
+        delete_ManageProfile,
+        [guesttranunkid, tranunkid, guesttranunkid],
+        (err, result) => {
+          if (err) throw err;
 
-  con.query(delete_ManageProfile,[guesttranunkid,tranunkid,guesttranunkid],(err,result) => {
+          console.log(result);
 
-    if (err)  throw err;
-
-    console.log(result)
-    
-  })
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    }})
-}
-
-
-
-
+          res.status(200).json({
+            message: {
+              messageTitle:"Delete data sucessfully" ,
+              messageBody: `Delete Guest: ${honorifics} ${name} profile details`,
+            },
+          });
+        }
+      );
+    }
+  });
+};
 
 exports.confirmCheckIn = async (req, res) => {
   try {
@@ -412,7 +401,7 @@ exports.confirmCheckIn = async (req, res) => {
 
         console.log(typeof requestunkid, BigInt(requestunkid));
         console.log(typeof requestunkid, requestunkid);
-        console.log(tranunkid)
+        console.log(tranunkid);
         con.query(
           selfCheckin,
           [
@@ -476,24 +465,27 @@ exports.confirmCheckIn = async (req, res) => {
                   (err, result) => {
                     if (err) throw err;
                     console.log(result);
-
-               
-
                   }
                 );
-
-               
               }
 
-              res.status(200).json({message:{messageTitle:"Selfcheckin request",messageBody:"Your request send  sucessfully"}});
+              res.status(200).json({
+                message: {
+                  messageTitle: "Selfcheckin request",
+                  messageBody: "Your request send  sucessfully",
+                },
+              });
             }
           }
         );
       } catch (e) {
         console.log(e);
-        res.status(400).json(
-          {message:{messageTitle:"ERROR",messageBody:"SOMETHING WRONG,contect to your  Hotel receptionist"}}
-        );
+        res.status(400).json({
+          message: {
+            messageTitle: "ERROR",
+            messageBody: "SOMETHING WRONG,contect to your  Hotel receptionist",
+          },
+        });
       }
     });
   } catch (e) {
@@ -512,7 +504,7 @@ exports.transport_request = async (req, res) => {
     //   Object.values(result[0])[0]
     // );
     requestunkid = Object.values(result[0])[0];
-    tranunkid = tranunkid
+    tranunkid = tranunkid;
     var requestdateTime;
     var description;
     try {
@@ -535,8 +527,6 @@ exports.transport_request = async (req, res) => {
           "____________________________________"
         );
         requestdateTime = `${date1} ${time1}`;
-
-      
       } else {
         var { description2, transportNameNumber2, date2, time2 } = req.body;
         console.log(time2);
@@ -572,11 +562,15 @@ exports.transport_request = async (req, res) => {
         (err, result) => {
           if (err) throw err;
           console.log(result);
-          res.status(201).json({ message: {messageTitle:"Transport Request",messageBody:`Your request:${description} send sucessfully` } });
+          res.status(201).json({
+            message: {
+              messageTitle: "Transport Request",
+              messageBody: `Your request:${description} send sucessfully`,
+            },
+          });
         }
       );
       console.log("sucess");
-     
     } catch (e) {
       console.log(e);
     }
