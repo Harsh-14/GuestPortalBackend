@@ -38,7 +38,7 @@ var groupCode = " ";
 exports.login2 = async (req, res, next) => {
   unklink = req.params.unkid;
 
-  console.log(unklink);
+  console.log(unklink,"this is link");
 
   try {
     exec(
