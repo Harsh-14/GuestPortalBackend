@@ -176,6 +176,7 @@ exports.userDashboard = async (req, res) => {
 
 //hotel_map
 exports.hotelMap = async (req, res) => {
+  console.log("HotelMap Get request")
   con.query(hotel_map, [hotel_code], (err, result) => {
     if (err) throw err;
     console.log(result);
