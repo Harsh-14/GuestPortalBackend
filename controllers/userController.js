@@ -21,6 +21,7 @@ const {
   selfCheckin_transport,
   insert_ManageProfile,
   get_guesttranukid,
+  delete_ManageProfile
 } = require("../SQL/sqlQueries");
 
 console.log(moment().format("yyyy-mm-dd:hh:mm:ss"));
@@ -330,6 +331,46 @@ res.status(200).json({message:{messageTitle:"Update Guest Details",messageBody:"
     }
   });
 };
+
+
+exports.delete_guestProfile = async (req,res) => {
+  con.changeUser({ database: "saas_ezee" }, (err) => {
+    if (err) {
+      console.log("Error in changing database", err);
+      return;
+    } else {
+      console.log(req.body);
+
+      const guesttranunkid = req.body.guesttranunkid;
+
+
+  con.query(delete_ManageProfile,[guesttranunkid,tranunkid,guesttranunkid],(err,result) => {
+
+    if (err)  throw err;
+
+    console.log(result)
+    
+  })
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    }})
+}
+
+
+
+
 
 exports.confirmCheckIn = async (req, res) => {
   try {

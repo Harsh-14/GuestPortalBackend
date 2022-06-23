@@ -72,6 +72,19 @@ fdguesttran.guesttranunkid =? AND
 fdtraninfo.tranunkid = ?
     AND fdtraninfo.hotel_code = ?`;
 
+
+
+exports.delete_ManageProfile = `DELETE 	
+from  
+fdguesttran where guesttranunkid=? AND tranunkid=?;
+DELETE 
+from 
+trcontact
+where contactunkid=?;`
+
+
+
+
 exports.getRequestunkid = `select max(requestunkid)+1 as requestunkid,tranunkid from saas_ezee.guestrequest where hotel_code=?`;
 
 exports.selfCheckin = `
