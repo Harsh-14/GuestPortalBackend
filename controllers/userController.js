@@ -181,7 +181,7 @@ exports.hotelMap = async (req, res) => {
     if (err) throw err;
     console.log(result);
 
-    res.status(200).json({ messagez: result });
+    res.status(200).json({ data: result });
   });
 };
 
